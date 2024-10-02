@@ -17,12 +17,15 @@ export default {
         about() {
             this.$router.push('/about');
         },
-
         loginPage() {
             this.$router.push('/login');
         },
         dashboardPage() {
-            this.$router.push('/dashboard');
+            if (this.isAuthenticated) {
+                this.$router.push('/dashboard');
+            } else {
+                this.$router.push('/login');
+            }
         },
         async logout() {
             try {
@@ -43,8 +46,10 @@ export default {
                 localStorage.removeItem('auth_token');
                 this.isAuthenticated = false;
 
-                // Redirect to the login page
-                this.$router.push('/login');
+                // Redirect to the login page and clear history
+                this.$router.push('/').then(() => {
+                    window.history.pushState(null, '', window.location.href);
+                });
             } catch (error) {
                 console.error('Logout failed:', error);
             }

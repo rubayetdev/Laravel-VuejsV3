@@ -5,6 +5,7 @@ import about from '../components/componentsFile/aboutPage.vue';
 import notFound from '../components/componentsFile/notFound.vue';
 import loginComponent from '../components/componentsFile/login.vue';
 import registerComponent from '../components/componentsFile/register.vue';
+import dashboardComponent from '../components/componentsFile/dashboard.vue';
 
 const routes =
     [
@@ -19,6 +20,10 @@ const routes =
         {
             path: '/about',
             component: about
+        },
+        {
+            path: '/dashboard',
+            component: dashboardComponent
         },
         {
             path: '/:pathMatch(.*)*',

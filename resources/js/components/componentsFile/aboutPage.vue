@@ -1,11 +1,28 @@
 <script setup>
+import {ref, onMounted} from "vue";
+import axios from "axios";
 
+const username = ref('Guest')
+
+onMounted(async ()=>{
+    try{
+        const response = await axios.get('/api/user',{
+            headers:{
+                Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+            },
+        });
+        username.value = response.data.name;
+    }
+    catch (error){
+        console.error(error);
+    }
+});
 </script>
 
 <template>
     <section class="py-16">
         <div class="container mx-auto text-center">
-            <h1 class="text-4xl font-bold mb-8">About Us</h1>
+            <h1 class="text-4xl font-bold mb-8">{{username}}</h1>
             <p class="text-xl text-gray-600 mb-8">Welcome to My Website! We are committed to providing exceptional services that help your business thrive. Our team is passionate about creating value for our customers and delivering the best solutions to meet your needs.</p>
         </div>
     </section>

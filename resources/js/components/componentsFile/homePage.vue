@@ -1,11 +1,30 @@
 <script setup>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
+// User state
+const userName = ref('Guest');
+
+// Get the authenticated user data
+onMounted(async () => {
+    try {
+        const response = await axios.get('/api/user', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('auth_token')}`, // Get token from local storage
+            },
+        });
+        userName.value = response.data.name; // Set user name if authenticated
+    } catch (error) {
+        // If unauthenticated or error occurs, 'Guest' will be displayed
+        console.error('User not authenticated', error);
+    }
+});
 </script>
 
 <template>
     <section class="bg-blue-600 text-white py-20">
         <div class="container mx-auto text-center">
-            <h1 class="text-5xl font-bold mb-4">Welcome to My Website</h1>
+            <h1 class="text-5xl font-bold mb-4">Welcome, {{ userName }} to My Website</h1>
             <p class="text-xl mb-8">We provide the best solutions to grow your business.</p>
             <a href="/services" class="bg-white text-blue-600 px-6 py-3 font-bold rounded-lg hover:bg-gray-200">Learn More</a>
         </div>
